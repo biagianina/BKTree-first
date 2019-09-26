@@ -64,5 +64,28 @@ namespace BKTree
 
             Assert.Equal(result, results);
         }
+
+        [Fact]
+        public void CheckAWordWithMultipleSuggestions()
+        {
+            var tree = new CreateBKTree();
+            tree.Add("help");
+            tree.Add("hell");
+            tree.Add("shel");
+            tree.Add("smell");
+            tree.Add("fell");
+            tree.Add("felt");
+            tree.Add("oops");
+            tree.Add("pop");
+            tree.Add("oouch");
+            tree.Add("halt");
+            const string word = "helt";
+            const int tolerance = 2;
+
+            var result = new List<string> { "help", "shel", "fell", "halt", "felt", "hell" };
+            var results = tree.Match(word, tolerance);
+
+            Assert.Equal(result, results);
+        }
     }
 }
