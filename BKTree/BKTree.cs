@@ -26,6 +26,20 @@ namespace BKTree
             return result;
         }
 
+        private void AddToChildren(BKTreeNode node, string value)
+        {
+            int levenstheinDist = GetLevenstheinDistance(node.Value, value);
+            if (!node.Children.ContainsKey(levenstheinDist))
+            {
+                node.Children.Add(levenstheinDist, new BKTreeNode(value));
+            }
+            else
+            {
+                node.Children.TryGetValue(levenstheinDist, out BKTreeNode current);
+                AddToChildren(current, value);
+            }
+        }
+
         private void Match(BKTreeNode node, string word, int tolerance, ICollection<string> result)
             {
             int dist = GetLevenstheinDistance(node.Value, word);
@@ -44,21 +58,6 @@ namespace BKTree
                 {
                     Match(child, word, tolerance, result);
                 }
-            }
-        }
-
-        private void AddToChildren(BKTreeNode rootNode, string value)
-        {
-            int levenstheinDist = GetLevenstheinDistance(rootNode.Value, value);
-            if (!rootNode.Children.ContainsKey(levenstheinDist))
-            {
-                rootNode.Children.Add(levenstheinDist, new BKTreeNode(value));
-            }
-            else
-            {
-                rootNode.Children.TryGetValue(levenstheinDist, out BKTreeNode current);
-                int dist = GetLevenstheinDistance(current.Value, value);
-                current.Children.Add(dist, new BKTreeNode(value));
             }
         }
 
