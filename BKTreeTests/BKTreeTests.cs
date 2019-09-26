@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using System.Collections.Generic;
 
 namespace BKTree
 {
@@ -18,6 +19,27 @@ namespace BKTree
             tree.Add("loop");
             tree.Add("toop");
             Assert.NotNull(tree);
+        }
+
+        [Fact]
+        public void CheckWord()
+        {
+            var tree = new CreateBKTree();
+            tree.Add("help");
+            tree.Add("hell");
+            tree.Add("helps");
+            tree.Add("hello");
+            tree.Add("shell");
+            tree.Add("helper");
+            tree.Add("loop");
+            tree.Add("toop");
+            const string word = "oop";
+            const int tolerance = 2;
+
+            var result = new List<string> { "loop", "toop" };
+            var results = tree.Match(word, tolerance);
+
+            Assert.Equal(result, results);
         }
     }
 }

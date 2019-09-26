@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BKTree
 {
@@ -17,6 +16,34 @@ namespace BKTree
             else
             {
                 rootNode = new BKTreeNode(value);
+            }
+        }
+
+        public List<string> Match(string word, int tolerance)
+        {
+            List<string> result = new List<string>();
+            Match(rootNode, word, tolerance, result);
+            return result;
+        }
+
+        private void Match(BKTreeNode node, string word, int tolerance, ICollection<string> result)
+            {
+            int dist = GetLevenstheinDistance(node.Value, word);
+
+            if (dist <= tolerance)
+            {
+                result.Add(node.Value);
+            }
+
+            int lowerDist = dist - tolerance > 0 ? dist - tolerance : 1;
+            int upperDist = dist + tolerance;
+
+            for (int i = upperDist; i >= lowerDist; i--)
+            {
+                if (node.Children.TryGetValue(i, out BKTreeNode child))
+                {
+                    Match(child, word, tolerance, result);
+                }
             }
         }
 
